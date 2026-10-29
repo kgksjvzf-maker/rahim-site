@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>আমার পরিচিতি</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 40px; }
+    h1 { color: darkgreen; }
+    button { padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>আমি আব্দুর রহিম</h1>
+  <p>ঢাকায় থাকি, ওয়েবসাইট বানানো শিখছি।</p>
+  <button onclick="document.getElementById('m').textContent='ধন্যবাদ😊!'">
+    হাই, 🖐️বলুন
+  </button>
+  <p id="m"></p>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>আমার সার্ভিস</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; }
+    .container { width: 90%; max-width: 900px; margin: 0 auto; }
+    header { background: #0a5; color: white; padding: 24px 0; text-align: center; }
+    .cards { display: flex; flex-wrap: wrap; gap: 16px; margin: 24px 0; }
+    .card { flex: 1 1 250px; padding: 16px; border: 1px solid #ddd; border-radius: 10px; }
+    @media (max-width: 600px) { h1 { font-size: 24px; } }
+  </style>
+</head>
+<body>
+  <header><h1>আমার সার্ভিস</h1></header>
+  <div class="container">
+    <div class="cards">
+      <div class="card"><h3>ওয়েব ডিজাইন</h3><p>সুন্দর ও দ্রুত সাইট।</p></div>
+      <div class="card"><h3>লোগো</h3><p>আপনার ব্র্যান্ডের পরিচয়।</p></div>
+      <div class="card"><h3>সাপোর্ট</h3><p>যেকোনো সময় সহায়তা।</p></div>
+    </div>
+  </div>
+</body>
+</html>
+<form id="contact-form">
+  <label for="name">নাম</label>
+  <input type="text" id="name" name="name" required>
+
+  <label for="phone">ফোন</label>
+  <input type="tel" id="phone" name="phone" required>
+
+  <label for="msg">বার্তা</label>
+  <textarea id="msg" name="msg" rows="4"></textarea>
+
+  <button type="submit">পাঠান</button>
+  <p id="result"></p>
+</form>
+
+<script>
+  document.getElementById("contact-form").addEventListener("submit", function (e) {
+    e.preventDefault();  // পেজ রিলোড বন্ধ করে
+    var name = document.getElementById("name").value;
+    document.getElementById("result").textContent = "ধন্যবাদ, " + name + "!";
+  });
+</script>
+<h2>আমার করণীয়</h2>
+<input id="inp" placeholder="নতুন কাজ লিখুন">
+<button onclick="add()">যোগ করুন</button>
+<ul id="list"></ul>
+
+<script>
+  let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+  function save() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }
+
+  function render() {
+    const ul = document.getElementById("list");
+    ul.innerHTML = "";
+    tasks.forEach(function (t, i) {
+      const li = document.createElement("li");
+      li.textContent = t + " ";
+      const del = document.createElement("button");
+      del.textContent = "মুছুন";
+      del.onclick = function () { tasks.splice(i, 1); save(); render(); };
+      li.appendChild(del);
+      ul.appendChild(li);
+    });
+  }
+
+  function add() {
+    const inp = document.getElementById("inp");
+    if (inp.value.trim() === "") return;   // খালি হলে কিছু করবে না
+    tasks.push(inp.value.trim());
+    inp.value = "";
+    save();
+    render();
+  }
+
+  render();
+</script>
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ঢাকার আবহাওয়া</title>
+</head>
+<body style="font-family: sans-serif; text-align: center; padding: 40px;">
+  <h1>ঢাকার আবহাওয়া</h1>
+  <button onclick="loadWeather()">আবহাওয়া দেখুন</button>
+  <p id="out"></p>
+
+  <script>
+    async function loadWeather() {
+      const out = document.getElementById("out");
+      out.textContent = "লোড হচ্ছে...";
+      try {
+        const res = await fetch("https://api.open-meteo.com/v1/forecast?latitude=23.81&longitude=90.41&current_weather=true");
+        if (!res.ok) throw new Error("সার্ভার সাড়া দেয়নি");
+        const data = await res.json();
+        out.textContent = "ঢাকায় এখন " + data.current_weather.temperature + "°C";
+      } catch (err) {
+        out.textContent = "তথ্য আনা যায়নি";
+      }
+    }
+  </script>
+</body>
+</html>
